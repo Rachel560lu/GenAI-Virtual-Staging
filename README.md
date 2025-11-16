@@ -111,9 +111,9 @@ GenAI-Virtual-Staging/
 │
 ├── stage3_room rendering/            # Stage 3: Photorealistic rendering
 │   ├── furnishing.py                 # Main rendering script 
-│   └── Sample Data/                  # Example inputs
-│       ├── empty_room.png            # Empty room sample
-│       └── crude_image.png           # Draft layout sample
+│   └── inputs/                       # Inputs from previous stage
+│       ├── empty_room.png            # Empty room 
+│       └── crude_image.png           # Draft layout
 │
 └── front_end/                        # Web interface (optional)
     ├── api_server.py                 # FastAPI backend
@@ -188,9 +188,9 @@ max_iterations = 3                        # Number of iterations
 ```
 
 **Output:** 
-- `output/final_empty_room.png` - Main cleaned room image
-- `output/mask_iter_N.png` - Masks for each iteration
-- `output/image_iter_N.png` - Intermediate results
+- `output/empty_room.png` - Main cleaned room image
+- `output/mask_iter_N.png` - Masks for each iteration (for debugging)
+- `output/image_iter_N.png` - Intermediate results (for debugging)
 
 ---
 
