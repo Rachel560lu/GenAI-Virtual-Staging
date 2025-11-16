@@ -1,6 +1,7 @@
 # Capstone Project: Virtual Interior Redesign
 
-A complete end-to-end AI-powered pipeline for virtual interior redesign, transforming furnished room photos into realistically rendered, re-staged spaces with new furniture layouts and styles.
+A complete end-to-end AI-powered pipeline for virtual interior redesign, transforming furnished room photos into realistically rendered, re-staged spaces with new f
+urniture layouts and styles.
 
 ## 🎯 Overview
 
@@ -8,6 +9,11 @@ This project delivers a comprehensive three-stage pipeline:
 1. **Furniture Removal** - Intelligent segmentation and inpainting to create empty room images
 2. **Furniture Selection & Layout Planning** - AI-driven furniture selection within budget constraints and optimal placement
 3. **Photorealistic Rendering** - Structure-aware, style-controlled final rendering using ControlNet and Stable Diffusion
+
+
+
+https://github.com/user-attachments/assets/65cf12de-e468-4f29-a792-2469bfe70836
+
 
 ---
 
