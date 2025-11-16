@@ -49,11 +49,11 @@ def load_and_resize(path, max_side=768):
     return img
 
 # 空房间（没有沙发桌子）
-empty_path = "stage3_room rendering/Sample Data/empty_room.png"          
+empty_path = "stage3_room rendering/inputs/empty_room.png"          
 empty_img_pil = load_and_resize(empty_path, max_side=768)
 
 # 已摆好家具的房间 (crued 图)
-room_path = "stage3_room rendering/Sample Data/crude_image.png"     
+room_path = "stage3_room rendering/inputs/crude_image.png"     
 room_img_pil = load_and_resize(room_path, max_side=768)
 
 # 1. 先让两张图同尺寸
