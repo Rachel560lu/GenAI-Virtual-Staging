@@ -88,7 +88,7 @@ This project delivers a comprehensive three-stage pipeline:
 ## 📁 Repository Structure
 
 ```
-Capstone-Project/
+GenAI-Virtual-Staging/
 ├── README.md                          # This file
 │
 ├── stage1_clutter removal/            # Stage 1: Furniture removal
@@ -140,8 +140,8 @@ Capstone-Project/
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/Rachel560lu/Capstone-Project.git
-cd Capstone-Project
+git clone https://github.com/Rachel560lu/GenAI-Virtual-Staging.git
+cd GenAI-Virtual-Staging
 
 # 2. Create and activate virtual environment
 python -m venv .venv
@@ -157,12 +157,60 @@ pip install torch torchvision diffusers transformers accelerate pillow opencv-py
 
 ---
 
-## 💻 Usage
+## 💻 Setup Instructions
 
-### Quick Start: Stage 2 (Easiest - No GPU Required)
+### Stage 1: Furniture Removal
 
+**Requirements:** 
+- CUDA GPU
+- Python 3.9–3.11
+- PyTorch with CUDA support
+
+**Installation:**
+```bash
+cd "stage1_clutter removal"
+
+# Install dependencies
+pip install torch torchvision diffusers transformers accelerate pillow opencv-python numpy
+```
+
+**Usage:**
+```bash
+# Place your room image at: input/room.jpeg
+python rcsd.py
+```
+
+**Configuration** (edit `rcsd.py`):
+```python
+input_image_path = "input/room.jpeg"     # Input image path
+output_dir = "output"                     # Output directory
+max_iterations = 3                        # Number of iterations
+```
+
+**Output:** 
+- `output/final_empty_room.png` - Main cleaned room image
+- `output/mask_iter_N.png` - Masks for each iteration
+- `output/image_iter_N.png` - Intermediate results
+
+---
+
+### Stage 2: Furniture Selection and Layout Planning
+
+**Requirements:** 
+- Python 3.9–3.11
+- No GPU required
+
+**Installation:**
 ```bash
 cd "stage2_furniture selection"
+
+# Install dependencies
+pip install -r requirements.txt
+```
+
+**Usage:**
+```bash
+# Place empty room image at: inputs/empty_room.jpg
 python run.py
 ```
 
@@ -174,56 +222,87 @@ room_type = "living room"        # Room type
 room_size_m = (6.0, 5.0)        # Room dimensions in meters
 ```
 
-**Output:** `composed_room.jpg`
+**Input:**
+- `inputs/empty_room.jpg` - Empty room image (typically from Stage 1)
 
----
-
-### Stage 1: Furniture Removal
-
-```bash
-cd "stage1_clutter removal"
-
-# Place your room image at: input/room.jpeg
-python rcsd.py
-```
-
-**Requirements:** CUDA GPU  
-**Output:** `output/` directory with cleaned room images
+**Output:** 
+- `furniture_place/composed_room.jpg` - Draft layout with furniture
+- `furniture_select/selection.json` - Selected furniture list
+- `furniture_place/layout_results.json` - Layout coordinates
+- `furniture_place/message.json` - Processing messages
 
 ---
 
 ### Stage 3: Photorealistic Rendering
 
+**Requirements:** 
+- CUDA GPU
+- Python 3.9–3.11
+- PyTorch with CUDA support
+
+**Installation:**
 ```bash
 cd "stage3_room rendering"
+
+# Install dependencies
+pip install torch torchvision diffusers transformers accelerate pillow opencv-python numpy
+```
+
+**Usage:**
+```bash
+# Place input files in the same directory:
+# - empty_room.png (from Stage 1)
+# - crude_image.png (from Stage 2)
 python furnishing.py
 ```
 
+**Configuration** (edit `furnishing.py`):
+```python
+# Mask generation threshold (line 84)
+min_th = 60                      # Minimum threshold (50-80)
+
+# Rendering quality (line 159)
+num_inference_steps = 25         # More steps = better quality
+guidance_scale = 4.5             # Higher = more prompt adherence
+```
+
 **Input Files:**
-- `empty_room.png` (from Stage 1)
-- `crude_image.png` (from Stage 2)
+- `empty_room.png` - Empty room image (from Stage 1)
+- `crude_image.png` - Draft furniture layout (from Stage 2)
 
 **Output Files:**
-- `furnished_room.png` - Main result
-- `edge_map.png` - Edge detection
-- `mask.png` - Furniture mask (debugging)
-- `furnished_room_harmonized.png` - Enhanced version
-
-**Requirements:** CUDA GPU
+- `furnished_room.png` - Main rendered result
+- `edge_map.png` - Canny edge detection visualization (for debugging)
+- `mask.png` - Furniture mask (for debugging)
+- `furnished_room_harmonized.png` - Enhanced version with improved details
 
 ---
 
-### Front End: Web Interface
+### Web Interface (Optional)
 
-**Prerequisites:** Redis server
+**Requirements:**
+- Redis server
+- Node.js and npm
+- All dependencies from Stages 1-3
 
+**Installation:**
+```bash
+cd front_end
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Install Node.js dependencies
+npm install
+```
+
+**Usage:**
 ```bash
 # Terminal 1: Start Redis
 redis-server
 
 # Terminal 2: Start API Server
 cd front_end
-pip install -r requirements.txt
 python api_server.py
 
 # Terminal 3: Start Worker
@@ -232,7 +311,6 @@ python worker_server.py
 
 # Terminal 4: Start Frontend
 cd front_end
-npm install
 npm run dev
 ```
 
@@ -309,45 +387,10 @@ guidance_scale = 4.5             # Higher = more prompt adherence
 ## ⚠️ Limitations
 
 - **Inpainting Quality:** Depends on mask accuracy and background complexity
-- **Layout Refinement:** May require manual adjustment for atypical room geometries
-- **Rendering Fidelity:** Varies with available checkpoints and hardware
 - **GPU Requirement:** Stages 1 & 3 require NVIDIA GPU with CUDA
 - **Processing Time:** 2-5 minutes per image on GPU, much slower on CPU
 
----
 
-## 🐛 Troubleshooting
-
-### CUDA Out of Memory
-```python
-# Reduce image size in furnishing.py (line 54)
-max_side = 512  # Instead of 768
-```
-
-### Mask Detection Issues
-```python
-# Adjust threshold in furnishing.py (line 84)
-min_th = 50  # Lower for more detection
-min_th = 80  # Higher for less detection
-```
-
-### Redis Connection Error
-```bash
-# Check Redis is running
-redis-cli ping  # Should return PONG
-
-# Start Redis
-redis-server
-```
-
-### Model Download Issues
-```bash
-# Set Hugging Face cache directory
-export HF_HOME=/path/to/cache
-
-# Or use mirror
-export HF_ENDPOINT=https://hf-mirror.com
-```
 
 ---
 
@@ -408,7 +451,7 @@ For questions or issues, please open an issue on GitHub or contact the project m
 
 ## 🔗 Links
 
-- **Repository:** https://github.com/Rachel560lu/Capstone-Project
+- **Repository:** https://github.com/Rachel560lu/GenAI-Virtual-Staging
 
 ---
 
