@@ -15,6 +15,10 @@ This project delivers a comprehensive three-stage pipeline:
 https://github.com/user-attachments/assets/65cf12de-e468-4f29-a792-2469bfe70836
 
 
+https://github.com/user-attachments/assets/9ebca880-eb02-4621-bc09-88425d013223
+
+
+
 ---
 
 ## 🏗️ Architecture
