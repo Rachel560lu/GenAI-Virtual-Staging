@@ -380,7 +380,6 @@ Contributions are welcome! Please:
 - 🌐 Added React-based web interface
 - ⚡ Implemented Redis-based async processing
 
-See [stage3_room rendering/UPDATES.md](stage3_room%20rendering/UPDATES.md) for detailed Stage 3 improvements.
 
 ---
 
@@ -403,15 +402,13 @@ Please see the repository license or add one if missing. Ensure compliance with 
 
 ## 📧 Contact
 
-For questions or issues, please open an issue on GitHub or contact the project maintainers.
+For questions or issues, please open an issue on GitHub or contact the project maintainer： rachel560lv@gmail.com.
 
 ---
 
 ## 🔗 Links
 
 - **Repository:** https://github.com/Rachel560lu/Capstone-Project
-- **Testing Guide:** [TESTING_GUIDE.md](TESTING_GUIDE.md)
-- **Stage 3 Updates:** [stage3_room rendering/UPDATES.md](stage3_room%20rendering/UPDATES.md)
 
 ---
 
